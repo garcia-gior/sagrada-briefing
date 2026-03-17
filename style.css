@@ -502,9 +502,11 @@ textarea { min-height: 110px; }
   html { font-size: 16px; }
   .screen { padding: 90px 20px 40px; align-items: flex-start; }
   .options-grid.cols-2 { grid-template-columns: 1fr; }
+  .options-grid { gap: 8px; }
   .q-title { font-size: 28px; }
   input[type="text"], textarea { font-size: 16px; padding: 15px 14px; }
   .option-text { font-size: 15px; }
+  .option-item { padding: 14px 16px; }
   .step-actions { flex-direction: column-reverse; gap: 16px; align-items: stretch; }
   .btn-back  { text-align: center; justify-content: center; }
   .btn-next  { text-align: center; justify-content: center; }
