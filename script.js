@@ -235,20 +235,27 @@ function bindStepButtons() {
 // ─────────────────────────────────────────────
 function bindOptionItems() {
   document.querySelectorAll('.option-item').forEach(item => {
-    item.addEventListener('click', () => {
+    item.addEventListener('click', (e) => {
+      // Impede duplo disparo do label
+      e.preventDefault();
+
       const fieldName = item.dataset.field;
       const type = item.dataset.type;
+      const input = item.querySelector('input');
+
       if (type === 'radio') {
         document.querySelectorAll(`.option-item[data-field="${fieldName}"]`).forEach(el => {
           el.classList.remove('selected');
           el.querySelector('input').checked = false;
         });
         item.classList.add('selected');
-        item.querySelector('input').checked = true;
+        input.checked = true;
       }
+
       if (type === 'checkbox') {
-        item.classList.toggle('selected');
-        item.querySelector('input').checked = item.classList.contains('selected');
+        const isSelected = item.classList.contains('selected');
+        item.classList.toggle('selected', !isSelected);
+        input.checked = !isSelected;
       }
     });
   });
