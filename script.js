@@ -5,10 +5,7 @@
 
 'use strict';
 
-// ─────────────────────────────────────────────
-// ⚙️ CONFIGURAÇÃO — cole sua URL do Apps Script aqui
-// ─────────────────────────────────────────────
-const SHEETS_WEBHOOK_URL = 'COLE_SUA_URL_AQUI';
+const SHEETS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzYt7KrbBfmDHwFNkGDF3OD6XUKiwds_6LZ7gSD4BRmtFN9I6iPtP44gjT5lCosNyU/exec';
 
 // ─────────────────────────────────────────────
 // ESTADO GLOBAL
