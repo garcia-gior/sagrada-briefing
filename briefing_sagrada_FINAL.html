@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing de Marca — Sagrada Estratégia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A843;
+    --gold-dim: #A07828;
+    --gold-light: rgba(212,168,67,0.12);
+    --gold-border: rgba(212,168,67,0.25);
+    --black: #0E0E0E;
+    --surface: #141414;
+    --surface2: #1C1C1C;
+    --surface3: #242424;
+    --text: #E8E2D4;
+    --text-dim: #8A8070;
+    --text-muted: #4A4540;
+    --radius: 6px;
+    --transition: 0.2s ease;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Fundo com textura sutil */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 80% 10%, rgba(212,168,67,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 10% 90%, rgba(212,168,67,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 120px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--gold-border);
+    margin-bottom: 56px;
+  }
+
+  .brand {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .header p {
+    font-size: 14px;
+    color: var(--text-dim);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  /* ── PROGRESSO ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--surface3);
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* ── BLOCOS ── */
+  .bloco {
+    margin-bottom: 64px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .bloco-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .bloco-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+
+  .bloco-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .bloco-obj {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 32px;
+    padding-left: 2px;
+  }
+
+  .bloco-divider {
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    margin-bottom: 32px;
+    opacity: 0.5;
+  }
+
+  /* ── SUB-SEÇÃO ── */
+  .sub-titulo {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin: 40px 0 20px;
+  }
+
+  /* ── CAMPO ── */
+  .campo {
+    margin-bottom: 32px;
+  }
+
+  .campo label {
+    display: block;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .campo .estimulo {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    padding-left: 12px;
+    border-left: 2px solid var(--gold-border);
+  }
+
+  .campo input[type="text"],
+  .campo input[type="email"],
+  .campo input[type="tel"],
+  .campo textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--surface3);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color var(--transition), background var(--transition);
+    resize: none;
+  }
+
+  .campo input[type="text"]:focus,
+  .campo input[type="email"]:focus,
+  .campo input[type="tel"]:focus,
+  .campo textarea:focus {
+    border-color: var(--gold);
+    background: var(--surface3);
+  }
+
+  .campo textarea { min-height: 100px; line-height: 1.6; }
+  .campo textarea.tall { min-height: 160px; }
+
+  .campo input::placeholder,
+  .campo textarea::placeholder { color: var(--text-muted); }
+
+  /* Upload */
+  .upload-area {
+    border: 1px dashed var(--gold-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+    background: transparent;
+  }
+  .upload-area:hover { border-color: var(--gold); background: var(--gold-light); }
+  .upload-area input { display: none; }
+  .upload-icon {
+    font-size: 22px;
+    margin-bottom: 8px;
+    opacity: 0.5;
+  }
+  .upload-area p { font-size: 13px; color: var(--text-dim); }
+  .upload-area .nome-arquivo { color: var(--gold); font-size: 13px; margin-top: 6px; }
+
+  /* Nota de bloco */
+  .nota {
+    background: var(--gold-light);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--gold-dim);
+    font-style: italic;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* ── SUBMIT ── */
+  .submit-area {
+    margin-top: 72px;
+    padding-top: 48px;
+    border-top: 1px solid var(--gold-border);
+    text-align: center;
+  }
+
+  .submit-area p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+    line-height: 1.4;
+  }
+
+  .btn-submit {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 16px 48px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition);
+  }
+  .btn-submit:hover { background: #E0B84D; transform: translateY(-1px); }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ── SUCESSO ── */
+  .tela-sucesso {
+    display: none;
+    text-align: center;
+    padding: 80px 24px;
+  }
+  .tela-sucesso .icone { font-size: 40px; margin-bottom: 24px; }
+  .tela-sucesso h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .tela-sucesso p { font-size: 14px; color: var(--text-dim); }
+
+  /* ── ERRO ── */
+  .erro-msg {
+    display: none;
+    background: rgba(180,40,40,0.12);
+    border: 1px solid rgba(180,40,40,0.3);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #E07070;
+    margin-top: 16px;
+  }
+
+  /* Animações escalonadas por bloco */
+  .bloco:nth-child(1) { animation-delay: 0.05s; }
+  .bloco:nth-child(2) { animation-delay: 0.10s; }
+  .bloco:nth-child(3) { animation-delay: 0.15s; }
+  .bloco:nth-child(4) { animation-delay: 0.20s; }
+  .bloco:nth-child(5) { animation-delay: 0.25s; }
+  .bloco:nth-child(6) { animation-delay: 0.30s; }
+  .bloco:nth-child(7) { animation-delay: 0.35s; }
+  .bloco:nth-child(8) { animation-delay: 0.40s; }
+
+  @media (max-width: 600px) {
+    .wrapper { padding: 0 16px 100px; }
+    .header { padding: 48px 0 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<div class="wrapper">
+
+  <header class="header">
+    <div class="brand">Sagrada Estratégia</div>
+    <h1>Briefing<br>de <em>Marca</em></h1>
+    <p>Suas respostas são a matéria-prima do seu manual. Quanto mais honesta e detalhada for a sua resposta, mais preciso e poderoso será o resultado.</p>
+  </header>
+
+  <form id="form" novalidate>
+
+    <!-- ── BLOCO 0 ── -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Antes de começar</span>
+      </div>
+      <div class="bloco-titulo">Seus dados de contato</div>
+      <div class="bloco-divider"></div>
+      <p class="bloco-obj">Precisamos dessas informações para te enviar o manual e manter contato durante o processo.</p>
+
+      <div class="campo">
+        <label>Nome completo *</label>
+        <input type="text" name="nome" required placeholder="Como você se chama">
+      </div>
+      <div class="campo">
+        <label>WhatsApp com DDD *</label>
+        <input type="tel" name="whatsapp" required placeholder="(11) 99999-9999">
+      </div>
+      <div class="campo">
+        <label>E-mail *</label>
+        <input type="email" name="email" required placeholder="seu@email.com">
+      </div>
+      <div class="campo">
+        <label>@ do Instagram ou principal rede social *</label>
+        <input type="text" name="instagram" required placeholder="@suamarca">
+      </div>
+    </div>
+
+    <!-- ── BLOCO 1 ── -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 1</span>
+        <span class="bloco-titulo">Contexto de negócio</span>
+      </div>
+      <div class="bloco-divider"></div>
+      <p class="bloco-obj">Objetivo: entender quem é esse negócio, o que faz e onde está hoje.</p>
+
+      <div class="sub-titulo">1.1 Identificação</div>
+
+      <div class="campo">
+        <label>Qual é o nome oficial da sua marca ou negócio?</label>
+        <p class="estimulo">Pode ser o nome fantasia mesmo — como você quer ser reconhecida no mercado.</p>
+        <input type="text" name="nome_marca" placeholder="Nome da marca">
+      </div>
+      <div class="campo">
+        <label>Seu negócio já tem CNPJ ou ainda está como informal?</label>
+        <p class="estimulo">Sem julgamento — muitos começam sem e crescem muito assim. É só para entendermos seu momento.</p>
+        <input type="text" name="cnpj" placeholder="Ex: tenho CNPJ / ainda informal">
+      </div>
+      <div class="campo">
+        <label>Qual é o segmento em que você atua?</label>
+        <p class="estimulo">Ex: saúde e bem-estar, moda, educação, gastronomia, serviços criativos, beleza, tecnologia...</p>
+        <input type="text" name="segmento" placeholder="Seu segmento">
+      </div>
+      <div class="campo">
+        <label>Há quanto tempo o negócio existe?</label>
+        <p class="estimulo">Pode ser "lancei semana passada" ou "10 anos" — cada fase tem suas próprias necessidades.</p>
+        <input type="text" name="tempo_negocio" placeholder="Ex: 2 anos">
+      </div>
+      <div class="campo">
+        <label>Onde você atende? É local, regional, nacional ou tudo online?</label>
+        <p class="estimulo">Ex: só no meu bairro em SP, em todo o Brasil pelo Instagram, clientes no exterior também...</p>
+        <input type="text" name="abrangencia" placeholder="Ex: Brasil todo, online">
+      </div>
+
+      <div class="sub-titulo">1.2 Produto ou serviço</div>
+
+      <div class="campo">
+        <label>O que você vende, exatamente? Liste tudo o que oferece.</label>
+        <p class="estimulo">Não precisa ser uma lista perfeita. Joga tudo aqui — produtos, serviços, cursos, consultorias, o que for.</p>
+        <textarea name="produtos" class="tall" placeholder="Liste seus produtos e serviços..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Qual é o seu ticket médio? Tem faixas de preço diferentes?</label>
+        <p class="estimulo">Ex: vendo desde R$50 até pacotes de R$3.000, dependendo do serviço. Ou: tudo custa em torno de R$200.</p>
+        <input type="text" name="ticket" placeholder="Ex: R$200 a R$1.500">
+      </div>
+      <div class="campo">
+        <label>A entrega é presencial, online ou híbrida?</label>
+        <p class="estimulo">Ex: atendo só no estúdio / tudo pelo WhatsApp e videochamada / misto, depende do cliente.</p>
+        <input type="text" name="entrega" placeholder="Ex: online, híbrida...">
+      </div>
+      <div class="campo">
+        <label>Como é o caminho do seu cliente, do momento em que te descobre até a compra?</label>
+        <p class="estimulo">Ex: ela me vê no Instagram → manda mensagem → faço uma call → envio proposta → fecha. Descreve como funciona na prática.</p>
+        <textarea name="jornada" placeholder="Descreve o caminho do cliente..."></textarea>
+      </div>
+      <div class="campo">
+        <label>O seu negócio tem sazonalidade? Existe época de pico ou de baixa?</label>
+        <p class="estimulo">Ex: dezembro esgota tudo, janeiro é fraco. Ou: não tem, movimento constante o ano todo.</p>
+        <input type="text" name="sazonalidade" placeholder="Ex: pico em dezembro, baixa em janeiro">
+      </div>
+
+      <div class="sub-titulo">1.3 Momento atual</div>
+
+      <div class="campo">
+        <label>Por onde chegam seus clientes hoje?</label>
+        <p class="estimulo">Ex: maioria pelo boca a boca, alguns pelo Instagram, ninguém pelo site ainda. Pode marcar mais de um.</p>
+        <textarea name="canais_atuais" placeholder="Ex: indicação, Instagram, Google..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Já teve algum trabalho de identidade visual ou de marca antes?</label>
+        <p class="estimulo">Logo, manual, paleta, algo assim. Se sim, o que funcionou e o que travou? O que você gostaria que fosse diferente dessa vez? Se tiver logo, envie diretamente para Giordana.</p>
+        <textarea name="historico_marca" placeholder="Conte o que já foi feito..."></textarea>
+      </div>
+
+      <div class="nota">✨ Essas respostas nos dão o contexto geral. Não existe resposta certa ou errada aqui — quanto mais real, melhor para o seu manual.</div>
+    </div>
+
+    <!-- ── BLOCO 2 ── -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 2</span>
+        <span class="bloco-titulo">Posicionamento</span>
+      </div>
+      <div class="bloco-divider"></div>
+      <p class="bloco-obj">Objetivo: entender onde você está no mercado, o que te diferencia e o que você quer comunicar.</p>
+
+      <div class="sub-titulo">2.1 Diferencial</div>
+
+      <div class="campo">
+        <label>Por que alguém deveria te escolher no lugar de outra pessoa do seu setor?</label>
+        <p class="estimulo">Pode ser o atendimento, o processo, o resultado, o preço, a experiência que você entrega. O que faz você ser diferente?</p>
+        <textarea name="diferencial" placeholder="O que te diferencia..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Qual é a coisa que você faz melhor que qualquer outra pessoa da sua área?</label>
+        <p class="estimulo">Seja honesta. Isso não é arrogância — é clareza estratégica.</p>
+        <textarea name="melhor_coisa" placeholder="Sua maior força..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Existe algo no seu processo, produto ou atendimento que é único — que você não vê nenhum concorrente fazer?</label>
+        <p class="estimulo">Ex: entrego o resultado em 24h / tenho um método próprio com 7 etapas / atendo de forma completamente personalizada.</p>
+        <textarea name="unico" placeholder="O que só você faz..."></textarea>
+      </div>
+      <div class="campo">
+        <label>O que os seus clientes mais elogiam ou agradecem?</label>
+        <p class="estimulo">Pensa nos feedbacks que você recebeu. Nos áudios de WhatsApp, nos comentários, nos stories de marcação. O que mais aparece?</p>
+        <textarea name="elogios" placeholder="Feedbacks mais frequentes..."></textarea>
+      </div>
+
+      <div class="sub-titulo">2.2 Concorrência</div>
+
+      <div class="campo">
+        <label>Quem você considera seus 3 principais concorrentes diretos?</label>
+        <p class="estimulo">Podem ser marcas, profissionais, perfis no Instagram — o que o seu cliente também avaliaria antes de te contratar.</p>
+        <textarea name="concorrentes" placeholder="Liste os concorrentes..."></textarea>
+      </div>
+      <div class="campo">
+        <label>O que eles fazem bem que você admira?</label>
+        <p class="estimulo">Isso não é fraqueza — é inteligência de mercado. O que eles têm que você reconhece como bom?</p>
+        <textarea name="concorrentes_bom" placeholder="O que eles fazem bem..."></textarea>
+      </div>
+      <div class="campo">
+        <label>O que eles fazem que você jamais quer replicar?</label>
+        <p class="estimulo">Ex: comunicação muito agressiva, preço muito baixo que desvaloriza o mercado, falta de cuidado com o cliente...</p>
+        <textarea name="concorrentes_evitar" placeholder="O que você jamais quer fazer..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Você compete mais por preço, qualidade, experiência ou nicho específico?</label>
+        <p class="estimulo">Ex: sou a mais acessível da região / sou especialista só em mães de primeira viagem / entrego o resultado mais rápido.</p>
+        <input type="text" name="como_compete" placeholder="Ex: qualidade e experiência">
+      </div>
+
+      <div class="sub-titulo">2.3 Proposta de valor</div>
+
+      <div class="campo">
+        <label>Complete essa frase: "Eu ajudo [quem] a [fazer o quê] para que [resultado]."</label>
+        <p class="estimulo">Ex: Eu ajudo empreendedoras criativas a organizarem sua comunicação para que possam vender mais sem depender de sorte.</p>
+        <textarea name="proposta_valor" placeholder="Eu ajudo..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Se a sua marca fosse uma pessoa e chegasse numa festa, como ela se apresentaria?</label>
+        <p class="estimulo">Ex: ela chegaria confiante, cumprimentaria todo mundo pelo nome, falaria pouco mas diria coisas que ficam na cabeça.</p>
+        <textarea name="marca_pessoa" placeholder="Como sua marca se apresentaria..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Qual problema real e concreto você resolve na vida do seu cliente?</label>
+        <p class="estimulo">Não o que você vende — o que muda na vida dela depois que te contrata. Qual dor some? Qual sonho se aproxima?</p>
+        <textarea name="problema_resolve" placeholder="Qual dor some, qual sonho se aproxima..."></textarea>
+      </div>
+
+      <div class="nota">✨ Essas três perguntas são o coração do seu manual. Reserve um tempinho para responder com calma — vale muito a pena.</div>
+    </div>
+
+    <!-- ── BLOCO 3 ── -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 3</span>
+        <span class="bloco-titulo">Público-alvo e persona</span>
+      </div>
+      <div class="bloco-divider"></div>
+      <p class="bloco-obj">Objetivo: construir um retrato fiel do cliente ideal — não uma estatística, uma pessoa real.</p>
+
+      <div class="sub-titulo">3.1 Perfil demográfico</div>
+
+      <div class="campo">
+        <label>Qual é a faixa etária predominante dos seus clientes?</label>
+        <p class="estimulo">Ex: maioria entre 28 e 40 anos / tenho de tudo, de 20 a 60 / quase todas com mais de 50.</p>
+        <input type="text" name="faixa_etaria" placeholder="Ex: 28 a 40 anos">
+      </div>
+      <div class="campo">
+        <label>Seu público é majoritariamente feminino, masculino ou misto?</label>
+        <input type="text" name="genero" placeholder="Ex: majoritariamente feminino">
+      </div>
+      <div class="campo">
+        <label>De onde são seus clientes? Cidade, estado, Brasil todo ou fora também?</label>
+        <input type="text" name="origem_clientes" placeholder="Ex: São Paulo e Grande SP">
+      </div>
+      <div class="campo">
+        <label>Qual é a faixa de renda aproximada do seu cliente ideal?</label>
+        <p class="estimulo">Ex: classe C com aspiração B / profissionais liberais com renda estável / classe A que valoriza exclusividade.</p>
+        <input type="text" name="renda" placeholder="Ex: classe B, renda estável">
+      </div>
+      <div class="campo">
+        <label>Qual é o nível de escolaridade médio do seu público?</label>
+        <p class="estimulo">Ex: ensino médio completo / superior em andamento ou completo / pós-graduação.</p>
+        <input type="text" name="escolaridade" placeholder="Ex: superior completo">
+      </div>
+
+      <div class="sub-titulo">3.2 Comportamento e contexto</div>
+
+      <div class="campo">
+        <label>O que seu cliente ideal faz no dia a dia?</label>
+        <p class="estimulo">Profissão, rotina, estilo de vida. Ex: é empreendedora que trabalha de casa, mãe com filhos pequenos, executiva que viaja muito.</p>
+        <textarea name="dia_a_dia" placeholder="Descreve a rotina do cliente ideal..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Quais redes sociais ele ou ela usa com mais frequência?</label>
+        <p class="estimulo">Ex: vive no Instagram e TikTok / só LinkedIn / mistura de Insta e YouTube.</p>
+        <input type="text" name="redes_cliente" placeholder="Ex: Instagram e YouTube">
+      </div>
+      <div class="campo">
+        <label>Como esse cliente descobre novos produtos ou serviços?</label>
+        <p class="estimulo">Ex: indicação de amigas / busca no Google / vê no Instagram e pesquisa antes de comprar / assiste reviews no YouTube.</p>
+        <textarea name="descoberta" placeholder="Como ela descobre..."></textarea>
+      </div>
+      <div class="campo">
+        <label>O que ele ou ela consome de conteúdo? O que assiste, lê, escuta?</label>
+        <p class="estimulo">Ex: podcasts de empreendedorismo, séries na Netflix, perfis de lifestyle no Insta, nada — não tem tempo pra nada.</p>
+        <textarea name="consumo_conteudo" placeholder="Conteúdo que consome..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Qual é a maior dor ou frustração que seu cliente sente em relação ao que você oferece?</label>
+        <p class="estimulo">Ex: tentou de tudo e nada funciona / já foi enganada antes / não sabe por onde começar / sente que está ficando para trás.</p>
+        <textarea name="dor_principal" placeholder="A maior frustração dela..."></textarea>
+      </div>
+
+      <div class="sub-titulo">3.3 Desejos e objeções</div>
+
+      <div class="campo">
+        <label>O que seu cliente mais deseja alcançar ao te contratar?</label>
+        <p class="estimulo">Não o serviço em si — o sentimento, o resultado, a transformação. Ex: quer se sentir vista, quer finalmente ter clareza, quer parar de improvisar.</p>
+        <textarea name="desejo" placeholder="O que ela mais deseja..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Qual é o maior medo ou objeção antes de comprar?</label>
+        <p class="estimulo">Ex: "e se não funcionar pra mim?" / "será que vale o preço?" / "não tenho tempo pra aplicar" / "já tentei algo parecido e não deu certo".</p>
+        <textarea name="objecao" placeholder="O maior medo antes de comprar..."></textarea>
+      </div>
+      <div class="campo">
+        <label>O que faz esse cliente hesitar ou demorar para tomar a decisão?</label>
+        <p class="estimulo">Ex: precisa conversar com o marido / espera o salário cair / fica comparando opções por semanas / medo de errar.</p>
+        <textarea name="hesitacao" placeholder="O que a faz hesitar..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Que frase esse cliente usaria para descrever o problema que você resolve?</label>
+        <p class="estimulo">Tenta usar as palavras dele, não as suas. Ex: "não sei como me posicionar" / "ninguém me acha no Instagram" / "vendo bem mas não consigo crescer".</p>
+        <textarea name="frase_cliente" placeholder="Nas palavras dela..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Me descreve um cliente real que você já atendeu e que você considera o cliente ideal.</label>
+        <p class="estimulo">Pode dar um nome fictício. Quem é essa pessoa, o que ela vivia antes, como foi o processo, o que mudou pra ela depois.</p>
+        <textarea name="cliente_ideal" class="tall" placeholder="Conte a história dela..."></textarea>
+      </div>
+
+      <div class="nota">✨ Esse retrato detalhado é o que vai fazer o seu manual soar verdadeiro — e não genérico. Pega uma xícara de café antes de responder essa última. 😉</div>
+    </div>
+
+    <!-- ── BLOCO 4 ── -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 4</span>
+        <span class="bloco-titulo">Personalidade da marca</span>
+      </div>
+      <div class="bloco-divider"></div>
+      <p class="bloco-obj">Objetivo: definir como a sua marca se comporta, fala e se apresenta ao mundo.</p>
+
+      <div class="sub-titulo">4.1 Caráter e valores</div>
+
+      <div class="campo">
+        <label>Cite 3 adjetivos que você quer que as pessoas usem para descrever a sua marca.</label>
+        <p class="estimulo">Escolha os seus ou inspire-se: Confiante · Acolhedora · Criativa · Sofisticada · Direta · Inspiradora · Ousada · Humana · Exclusiva · Leve · Transformadora · Autêntica</p>
+        <input type="text" name="adjetivos_positivos" placeholder="Ex: sofisticada, acolhedora, transformadora">
+      </div>
+      <div class="campo">
+        <label>Cite 3 adjetivos que a sua marca JAMAIS quer que usem para descrevê-la.</label>
+        <p class="estimulo">Ex — o que evitar: Fria · Genérica · Barata · Arrogante · Entediante · Amadora · Complicada · Agressiva · Impessoal · Caótica</p>
+        <input type="text" name="adjetivos_negativos" placeholder="Ex: fria, genérica, amadora">
+      </div>
+      <div class="campo">
+        <label>Quais são os 3 valores mais importantes para o seu negócio?</label>
+        <p class="estimulo">Ex: honestidade, resultado real, cuidado com o cliente, liberdade, excelência, pertencimento, impacto social.</p>
+        <input type="text" name="valores" placeholder="Ex: honestidade, excelência, cuidado">
+      </div>
+      <div class="campo">
+        <label>Se a sua marca fosse uma pessoa famosa — real ou fictícia — quem seria? Por quê?</label>
+        <p class="estimulo">Ex: seria a Michelle Obama: poderosa, elegante, humana e inspiradora. Ou a Hermione Granger: metódica, inteligente e sempre preparada.</p>
+        <textarea name="pessoa_famosa" placeholder="Quem seria e por quê..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Se a sua marca fosse um lugar físico, o que seria?</label>
+        <p class="estimulo">Ex: um café chique mas aconchegante onde todo mundo se sente bem-vindo / um estúdio de design moderno e silencioso / uma livraria cheia de segredos.</p>
+        <input type="text" name="lugar_fisico" placeholder="Ex: um café sofisticado e acolhedor">
+      </div>
+
+      <div class="sub-titulo">4.2 Tom de voz</div>
+
+      <div class="campo">
+        <label>A marca fala de forma formal ou informal com o cliente?</label>
+        <p class="estimulo">Ex: usa "você" ou "tu"? Usa vírgula em todo lugar ou escreve como fala? Tem distância ou intimidade?</p>
+        <input type="text" name="formalidade" placeholder="Ex: informal e próxima, mas com elegância">
+      </div>
+      <div class="campo">
+        <label>A comunicação é mais séria e direta ou descontraída e próxima?</label>
+        <p class="estimulo">Ex: prefiro ser direta ao ponto / gosto de criar conexão antes de falar de serviço / mistura de autoridade com leveza.</p>
+        <input type="text" name="tom" placeholder="Ex: mistura de autoridade com leveza">
+      </div>
+      <div class="campo">
+        <label>Existe algum tipo de humor ou leveza na comunicação?</label>
+        <p class="estimulo">Ex: sim, uso memes e autoironia às vezes / não, prefiro seriedade / só quando o contexto permite.</p>
+        <input type="text" name="humor" placeholder="Ex: leveza sim, memes não">
+      </div>
+      <div class="campo">
+        <label>Tem termos ou palavras que a sua marca usa muito? E alguma que evita?</label>
+        <p class="estimulo">Ex: sempre digo "transformação", "jornada", "resultado". Jamais uso "baratinho", "promoção relâmpago", "última chance".</p>
+        <textarea name="vocabulario" placeholder="Palavras que usa e palavras que evita..."></textarea>
+      </div>
+
+      <div class="sub-titulo">4.3 Arquétipo</div>
+
+      <div class="campo">
+        <label>Qual arquétipo mais representa a sua marca?</label>
+        <p class="estimulo">Herói (supera desafios) · Sábio (conhecimento) · Criador (inovação) · Cuidador (suporte) · Explorador (liberdade) · Governante (liderança) · Amante (beleza) · Bobo (humor) · Mago (transformação) · Rebelde (autenticidade) · Inocente (otimismo) · Cara comum (pertencimento)</p>
+        <input type="text" name="arquetipo" placeholder="Ex: Mago — transformação">
+      </div>
+      <div class="campo">
+        <label>Que emoção a sua marca quer provocar no cliente ao ser vista pela primeira vez?</label>
+        <p class="estimulo">Ex: quero que ela sinta alívio ("finalmente alguém que entende") / admiração / confiança / pertencimento / motivação.</p>
+        <input type="text" name="emocao" placeholder="Ex: confiança e alívio">
+      </div>
+      <div class="campo">
+        <label>Existe uma crença ou missão maior que guia o seu negócio?</label>
+        <p class="estimulo">Ex: acredito que toda mulher merece se sentir poderosa na sua comunicação / que negócios locais podem transformar comunidades.</p>
+        <textarea name="missao" placeholder="A crença que guia o negócio..."></textarea>
+      </div>
+
+      <div class="nota">✨ O arquétipo e o tom de voz são o que vão fazer seu manual soar como você — e não como todo mundo.</div>
+    </div>
+
+    <!-- ── BLOCO 5 ── -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 5</span>
+        <span class="bloco-titulo">Identidade visual</span>
+      </div>
+      <div class="bloco-divider"></div>
+      <p class="bloco-obj">Objetivo: entender o que você já tem, o que admira e o que quer evitar visualmente.</p>
+
+      <p style="font-size:14px; color:var(--text-dim); margin-bottom:28px; line-height:1.6;"><strong style="color:var(--text); font-weight:400;">Antes de tudo:</strong> você vai trazer a sua logo pronta. A partir dela vamos identificar padrões e construir as diretrizes visuais do manual. Não crio logos — meu trabalho é organizar e potencializar o que você já tem.</p>
+
+      <div class="campo">
+        <label>Envie sua logo aqui (PNG, SVG ou PDF)</label>
+        <p class="estimulo">Se tiver mais de uma versão, envie a principal. Você também pode enviar direto para Giordana pelo WhatsApp.</p>
+        <div class="upload-area" onclick="document.getElementById('logo-upload').click()">
+          <input type="file" id="logo-upload" name="logo" accept=".png,.jpg,.jpeg,.svg,.pdf">
+          <div class="upload-icon">↑</div>
+          <p>Clique para selecionar o arquivo</p>
+          <p>PNG, JPG, SVG ou PDF</p>
+          <p class="nome-arquivo" id="nome-logo"></p>
+        </div>
+      </div>
+      <div class="campo">
+        <label>Você já tem uma logo? Descreva ela brevemente.</label>
+        <p class="estimulo">Ex: sim, é o nome da marca em letra cursiva dourada / tenho mas está desatualizada / tenho duas versões, uma com símbolo e uma só com texto.</p>
+        <textarea name="logo_desc" placeholder="Descreva sua logo..."></textarea>
+      </div>
+
+      <div class="sub-titulo">5.2 Cores e estilo</div>
+
+      <div class="campo">
+        <label>Tem alguma cor que você associa à sua marca? Por que essa cor?</label>
+        <p class="estimulo">Ex: sempre me identifiquei com o verde-escuro, passa seriedade e saúde / quero tons terrosos, combinam com minha proposta mais natural / ainda não sei, preciso de orientação.</p>
+        <textarea name="cores" placeholder="Cores e o porquê..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Que sensação visual você quer que a sua marca transmita?</label>
+        <p class="estimulo">Ex: sofisticação e exclusividade / leveza e otimismo / força e autoridade / acolhimento e proximidade / modernidade e inovação.</p>
+        <input type="text" name="sensacao_visual" placeholder="Ex: sofisticação e acolhimento">
+      </div>
+      <div class="campo">
+        <label>Você prefere um estilo mais minimalista ou mais rico em elementos?</label>
+        <p class="estimulo">Ex: menos é mais, prefiro muito branco e poucos elementos / gosto de textura, cor, movimento, vida / depende do formato.</p>
+        <input type="text" name="estilo_visual" placeholder="Ex: minimalista com detalhes dourados">
+      </div>
+      <div class="campo">
+        <label>Vai usar fotografia na sua comunicação? Se sim, que tipo?</label>
+        <p class="estimulo">Ex: fotos minhas no dia a dia / produto bem produzido / lifestyle com modelos / imagens de banco de dados / ainda não uso foto.</p>
+        <textarea name="fotografia" placeholder="Tipo de fotografia..."></textarea>
+      </div>
+
+      <div class="sub-titulo">5.3 Referências e aplicações</div>
+
+      <div class="campo">
+        <label>Cite 3 marcas que você admira visualmente. O que te atrai nelas?</label>
+        <p class="estimulo">Pode ser um perfil do Instagram, um site, uma marca de roupa, qualquer coisa. O que te chama atenção no visual delas?</p>
+        <textarea name="referencias_positivas" class="tall" placeholder="Marcas que admira e o que te atrai..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Onde você quer aplicar sua identidade visual? O que é prioridade?</label>
+        <p class="estimulo">Ex: Instagram é o principal / precisamos de cartão de visita físico / quero um link da bio bonito / tenho embalagem para produto.</p>
+        <textarea name="aplicacoes" placeholder="Onde vai aplicar..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Precisa de versões da logo para fundo escuro e fundo claro?</label>
+        <p class="estimulo">Ex: sim, uso muito fundo preto no feed / não, só uso fundo claro / não sei ainda.</p>
+        <input type="text" name="versoes_logo" placeholder="Ex: sim, preciso das duas versões">
+      </div>
+
+      <div class="nota">✨ Com a sua logo em mãos e essas respostas, consigo montar as diretrizes visuais com muito mais precisão.</div>
+    </div>
+
+    <!-- ── BLOCO 6 ── -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 6</span>
+        <span class="bloco-titulo">Objetivos e canais</span>
+      </div>
+      <div class="bloco-divider"></div>
+      <p class="bloco-obj">Objetivo: entender o que você quer resolver e em quais plataformas vai atuar.</p>
+
+      <div class="sub-titulo">6.1 Metas</div>
+
+      <div class="campo">
+        <label>O que você quer alcançar nos próximos 90 dias com a sua comunicação?</label>
+        <p class="estimulo">Ex: quero ter um feed organizado e profissional / quero começar a vender pelo Instagram / quero parar de depender só de indicação.</p>
+        <textarea name="meta_90dias" placeholder="Sua meta para 90 dias..."></textarea>
+      </div>
+      <div class="campo">
+        <label>O que seria o sucesso para você ao final desse projeto?</label>
+        <p class="estimulo">Ex: me sentir confiante para postar / ter um manual que qualquer designer consiga seguir / ter uma comunicação que realmente me represente.</p>
+        <textarea name="sucesso" placeholder="O que é sucesso para você..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Existe alguma meta de faturamento, seguidores ou leads para esse período?</label>
+        <p class="estimulo">Ex: quero dobrar o faturamento em 6 meses / chegar a 10k de seguidores / gerar 50 leads por mês.</p>
+        <textarea name="metas_numericas" placeholder="Metas em números..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Tem algum lançamento, campanha ou evento planejado nos próximos meses?</label>
+        <p class="estimulo">Ex: vou lançar um curso em março / tenho uma coleção nova saindo / estou abrindo uma segunda unidade.</p>
+        <input type="text" name="lancamentos" placeholder="Ex: lançamento de curso em maio">
+      </div>
+
+      <div class="sub-titulo">6.2 Canais digitais</div>
+
+      <div class="campo">
+        <label>Em quais redes sociais você já está presente?</label>
+        <input type="text" name="redes_presentes" placeholder="Ex: Instagram, LinkedIn">
+      </div>
+      <div class="campo">
+        <label>Quais plataformas quer priorizar daqui pra frente?</label>
+        <p class="estimulo">Ex: quero focar só no Instagram por enquanto / quero entrar no TikTok / preciso de um site de verdade.</p>
+        <input type="text" name="redes_prioridade" placeholder="Ex: Instagram e WhatsApp">
+      </div>
+      <div class="campo">
+        <label>Tem site ou landing page ativa? Está funcionando bem para converter?</label>
+        <p class="estimulo">Ex: tenho mas é velho e não atualizo / tenho só o link da bio / não tenho nada ainda.</p>
+        <input type="text" name="site" placeholder="Ex: não tenho site ainda">
+      </div>
+      <div class="campo">
+        <label>Usa e-mail marketing, WhatsApp Business ou algum tipo de automação?</label>
+        <p class="estimulo">Ex: tenho uma lista de e-mail mas não uso / uso o WhatsApp Business mas de forma básica / não uso nada ainda.</p>
+        <input type="text" name="automacao" placeholder="Ex: WhatsApp Business básico">
+      </div>
+      <div class="campo">
+        <label>Você tem recurso para produzir conteúdo?</label>
+        <p class="estimulo">Ex: tenho câmera boa e bastante tempo / faço tudo pelo celular mas consigo postar / não tenho tempo, preciso de algo simples.</p>
+        <input type="text" name="recurso_conteudo" placeholder="Ex: celular + 2h por semana">
+      </div>
+
+      <div class="sub-titulo">6.3 Conteúdo</div>
+
+      <div class="campo">
+        <label>Quem vai produzir o conteúdo?</label>
+        <p class="estimulo">Ex: eu mesma, sempre fiz tudo / tenho uma assistente que me ajuda / vou contratar alguém / você vai me dizer isso rs.</p>
+        <input type="text" name="produtor_conteudo" placeholder="Ex: eu mesma">
+      </div>
+      <div class="campo">
+        <label>Qual frequência de postagem você consegue manter de forma realista?</label>
+        <p class="estimulo">Ex: todos os dias / 3x por semana / 1x por semana / quando sobrar tempo — preciso de ajuda nisso.</p>
+        <input type="text" name="frequencia" placeholder="Ex: 3x por semana">
+      </div>
+      <div class="campo">
+        <label>Que tipo de conteúdo o seu público mais engaja hoje?</label>
+        <p class="estimulo">Ex: bastidores e dia a dia / conteúdo educativo / fotos do produto / vídeos curtos / nada — não consigo entender o que funciona.</p>
+        <textarea name="conteudo_engaja" placeholder="O que mais engaja hoje..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Existe algum conteúdo que você gostaria de fazer mas ainda não fez? Por quê?</label>
+        <p class="estimulo">Ex: quero fazer vídeos mas tenho vergonha / quero fazer lives mas não sei sobre o quê / quero escrever mas não sei como.</p>
+        <textarea name="conteudo_quero" placeholder="O que quer fazer mas ainda não faz..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Como você prefere se comunicar: texto, vídeo, imagem estática ou misto?</label>
+        <input type="text" name="formato_preferido" placeholder="Ex: misto, mas prefiro texto">
+      </div>
+
+      <div class="nota">✨ Com esses dados, montamos os seus pilares de conteúdo e uma linha editorial que você realmente vai conseguir executar — sem culpa e sem burnout.</div>
+    </div>
+
+    <!-- ── BLOCO 7 ── -->
+    <div class="bloco">
+      <div class="bloco-header">
+        <span class="bloco-num">Bloco 7</span>
+        <span class="bloco-titulo">Alinhamento final</span>
+      </div>
+      <div class="bloco-divider"></div>
+      <p class="bloco-obj">Objetivo: garantir que estamos na mesma página e que nada importante ficou de fora.</p>
+
+      <p style="font-size:14px; font-style:italic; color:var(--text-dim); margin-bottom:28px;">Você chegou até aqui — isso já diz muito sobre o quanto você leva o seu negócio a sério. Últimas perguntas, prometo. 🙏</p>
+
+      <div class="campo">
+        <label>O que você espera receber como entregável ao final desse projeto?</label>
+        <p class="estimulo">Ex: você quer direcionamento, acompanhamento ou materiais em PDF?</p>
+        <textarea name="entregavel" placeholder="O que você espera receber..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Tem alguma restrição que o manual deve respeitar?</label>
+        <p class="estimulo">Ex: não uso imagens de pessoas por questão religiosa / tenho uma parceria que não posso mencionar concorrentes / meu público é conservador.</p>
+        <textarea name="restricoes" placeholder="Restrições importantes..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Existe algum tema ou abordagem que é tabu para a sua marca?</label>
+        <p class="estimulo">Ex: não quero nada associado a política / minha marca é familiar, nada sexual / não quero linguagem muito corporativa.</p>
+        <textarea name="tabus" placeholder="O que deve ser evitado..."></textarea>
+      </div>
+      <div class="campo">
+        <label>Tem algo importante sobre a sua marca que eu ainda não perguntei?</label>
+        <p class="estimulo">Esse é o seu espaço livre. Conta o que quiser — curiosidade, contexto, história, aviso. Tudo é bem-vindo aqui.</p>
+        <textarea name="extras" class="tall" placeholder="Espaço livre — conte o que quiser..."></textarea>
+      </div>
+
+      <div class="nota">✨ Muito obrigada por dedicar esse tempo. Suas respostas são a base de tudo — e vou cuidar delas com muita atenção. Em breve você recebe o retorno. 💛</div>
+    </div>
+
+    <!-- ── SUBMIT ── -->
+    <div class="submit-area">
+      <p>"Sem estratégia, você vira refém do improviso."</p>
+      <button type="submit" class="btn-submit" id="btn-submit">Enviar briefing</button>
+      <div class="erro-msg" id="erro-msg">Algo deu errado ao enviar. Tente novamente ou entre em contato pelo WhatsApp.</div>
+    </div>
+
+  </form>
+
+  <!-- TELA DE SUCESSO -->
+  <div class="tela-sucesso" id="tela-sucesso">
+    <div class="icone">✦</div>
+    <h2>Briefing recebido com sucesso.</h2>
+    <p>Suas respostas estão a salvo. Em breve Giordana entrará em contato para dar os próximos passos.</p>
+    <br>
+    <p style="color:var(--text-muted); font-size:13px;">@sagradaestrategia</p>
+  </div>
+
+</div>
+
+<script>
+  // ── PROGRESSO ──
+  function atualizarProgresso() {
+    const campos = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
+    let preenchidos = 0;
+    campos.forEach(c => { if (c.value.trim()) preenchidos++; });
+    const pct = Math.round((preenchidos / campos.length) * 100);
+    document.getElementById('progress').style.width = pct + '%';
+  }
+
+  document.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('input', atualizarProgresso);
+  });
+
+  // ── UPLOAD ──
+  document.getElementById('logo-upload').addEventListener('change', function() {
+    const nome = this.files[0]?.name || '';
+    document.getElementById('nome-logo').textContent = nome;
+  });
+
+  // ── SUBMIT ──
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxurINgB5XO67P-gGJvxW2lBhZ9Gus3oydmcE0Tqmk8ZnrSR56x3cN9jzpFrYNZ7UU/exec';
+
+  document.getElementById('form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btn-submit');
+    const erroEl = document.getElementById('erro-msg');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    erroEl.style.display = 'none';
+
+    const dados = {};
+    new FormData(this).forEach((v, k) => { if (k !== 'logo') dados[k] = v; });
+
+    // arquivo: apenas nome (upload real exige backend separado)
+    const logoInput = document.getElementById('logo-upload');
+    if (logoInput.files[0]) dados['logo_nome'] = logoInput.files[0].name;
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+      document.getElementById('form').style.display = 'none';
+      document.getElementById('tela-sucesso').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      erroEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Enviar briefing';
+    }
+  });
+</script>
+</body>
+</html>
